@@ -1,10 +1,13 @@
 import praw
 
 from models.post_model import PostModel
-from web_handlers.sourcehandler import SourceHandler
+from web_handlers.source_handler import SourceHandler, ApiHandlerMixin
 
 
-class RedditSourceHandler(SourceHandler):
+class RedditSourceHandler(ApiHandlerMixin, SourceHandler):
+    """
+    A class that represents a reddit source handler
+    """
 
     def __init__(self, client_id: str, client_secret: str, user_agent: str, strategy: str = 'search', sub_reddit='all'):
         """
@@ -19,6 +22,7 @@ class RedditSourceHandler(SourceHandler):
                                client_secret=client_secret,
                                user_agent=user_agent)
         self.strategy = strategy
+        self.sub_reddit = self.api.subreddit(self.sub_reddit)
 
     def get_posts(self, query, limit: int = 10000):
         """
@@ -27,11 +31,7 @@ class RedditSourceHandler(SourceHandler):
         :param limit: the limit
         :return: returns a list of posts
         """
-        sub_reddit = self.api.subreddit(self.sub_reddit)
-        post_gen_fun = getattr(sub_reddit, self.strategy)(query=query, limit=limit)
-        return [PostModel(post.id, post.title, post.content, post.url, post.score, post.created) for post in post_gen_fun]
-
-
-sh = RedditSourceHandler('OI2Xgj35GgGQRA', 'reb2V3ZGmJNhq3v8I-RJoWQeJZA', 'sentiment analysis')
-sh.get_posts('teslamotors')
-
+        post_gen_fun = getattr(self.sub_reddit, self.strategy)(query=query, limit=limit)
+        return [PostModel(post.id, post.title, post.selftext, post.url, post.score,
+                          post.created_utc, 'REDDIT', not post.is_self)
+                for post in post_gen_fun]
