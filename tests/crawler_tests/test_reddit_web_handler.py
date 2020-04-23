@@ -3,8 +3,8 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 
 
-from models.post_model import PostModel
-from web_handlers.reddit_source_handler import RedditSourceHandler
+from crawler.models.post_model import PostModel
+from crawler.web_handlers import RedditSourceHandler
 
 
 # 1583533583.0 utc

@@ -1,11 +1,12 @@
-from models.post_model import PostModel
-from web_handlers.source_handler import SourceHandler, ResourceDownloaderMixin, ParserMixin
 import json
+
+from crawler.models.post_model import PostModel
+from crawler.web_handlers.source_handler import SourceHandler, ResourceDownloaderMixin, ParserMixin
 
 
 class TwitterSourceHandler(ResourceDownloaderMixin, ParserMixin, SourceHandler):
     """
-    A class that represents a reddit source handler
+    A class that implements a twitter source handler
     """
 
     @property
@@ -37,6 +38,11 @@ class TwitterSourceHandler(ResourceDownloaderMixin, ParserMixin, SourceHandler):
 
     @staticmethod
     def get_score(tweet) -> int:
+        """
+        A function to arse the interactions div and extract the scores
+        :param tweet: the tweet
+        :return: the score
+        """
         interactions = [interaction.text for interaction in tweet.select('span.ProfileTweet-actionCount')]
         return int(interactions[2].split()[0].replace(',', "").replace('.', ""))
 

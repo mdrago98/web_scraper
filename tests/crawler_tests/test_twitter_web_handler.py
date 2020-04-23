@@ -1,8 +1,11 @@
 from datetime import datetime
 from unittest import TestCase
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock
 
-from web_handlers.twitter_source_handler import TwitterSourceHandler
+from crawler.web_handlers import TwitterSourceHandler
+
+import pathlib
+from os import path
 
 
 class TestTwitterSourceHandler(TestCase):
@@ -23,7 +26,7 @@ class TestTwitterSourceHandler(TestCase):
                        + 'include_available_features=1&include_entities=1&include_new_items_bar=true'
 
     def test_get_posts_parses_twitter_response(self):
-        with open('web_handler_tests/twitter_sample.json') as file:
+        with open(path.join(pathlib.Path(__file__).parent.absolute(), 'twitter_sample.json')) as file:
             test_tweets: str = file.read()
         sut = TwitterSourceHandler()
         sut.get_resource = MagicMock()

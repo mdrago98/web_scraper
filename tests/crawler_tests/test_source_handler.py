@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 
-from web_handlers.source_handler import ResourceDownloaderMixin, ResourceException
+from crawler.web_handlers.source_handler import ResourceDownloaderMixin, ResourceException
 
 
 class MockResponse:

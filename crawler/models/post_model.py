@@ -1,11 +1,12 @@
-from re import compile as reg_compile
 from datetime import datetime
+from re import compile as reg_compile
 
 
 class PostModel:
     """
     A class that represents a user post from social media
     """
+
     def __init__(self, post_id: str, title: str, content: str, url: str, score: int,
                  created_date: int, scope: str, has_external: bool):
         """

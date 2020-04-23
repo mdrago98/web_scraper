@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 
 
 class SourceHandler(ABC):
     """
     An abstract class representing a source handler
     """
+
     @abstractmethod
     def get_posts(self, query) -> list:
         """
@@ -23,6 +24,7 @@ class ApiHandlerMixin:
     """
     A mix in class that adds api handling functionality
     """
+
     def __init__(self, client_id: str, client_secret: str, user_agent: str):
         self.client_id = client_id
         self.client_secret = client_secret
@@ -33,6 +35,7 @@ class ResourceException(Exception):
     """
     A class representing a resource exception
     """
+
     def __init__(self, status_code: int, reason: str):
         """
         Initialises the exception
