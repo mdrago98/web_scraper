@@ -1,0 +1,12 @@
+version: '2.0'
+services:
+  database:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_DATABASE=articleDB
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=test
+    ports:
+      - "27017:27017"
+volumes:
+  logvolume01: {}
