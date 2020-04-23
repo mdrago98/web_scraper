@@ -48,6 +48,7 @@ coverage html -d docs/coverage/
 * [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/) - XML/HTML parsing tool
 * [Praw](https://github.com/praw-dev/praw) - The python reddit api wrapper
 * [Pandas](https://pandas.pydata.org/) - A fast data analysis and manipulation tool.
+* [Plac](http://micheles.github.io/plac/) - Commandline argument parser.
 
 ## Authors
 
