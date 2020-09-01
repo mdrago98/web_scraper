@@ -7,8 +7,17 @@ class PostModel:
     A class that represents a user post from social media
     """
 
-    def __init__(self, post_id: str, title: str, content: str, url: str, score: int,
-                 created_date: int, scope: str, has_external: bool):
+    def __init__(
+        self,
+        post_id: str,
+        title: str,
+        content: str,
+        url: str,
+        score: int,
+        created_date: int,
+        scope: str,
+        has_external: bool,
+    ):
         """
         Initialises the post class
         :param post_id: he post id
@@ -28,7 +37,7 @@ class PostModel:
         self.created_date: datetime = datetime.fromtimestamp(created_date)
         self.has_external: bool = has_external
 
-    url_regex = reg_compile(r'^(https?://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*/?')
+    url_regex = reg_compile(r"^(https?://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*/?")
 
     @staticmethod
     def get_id(source, post_id) -> str:
@@ -38,7 +47,7 @@ class PostModel:
         :param post_id: the post id
         :return: the new id
         """
-        return f'{source}_{post_id}'
+        return f"{source}_{post_id}"
 
     def get_links(self) -> list:
         """
@@ -56,7 +65,10 @@ class PostModel:
         A utility function to get the dict representation of the post object
         :return:
         """
-        dict_object = dict((key, value) for key, value in self.__dict__.items()
-                           if not callable(value) and not key.startswith('__'))
-        dict_object['_id'] = self.post_id
+        dict_object = dict(
+            (key, value)
+            for key, value in self.__dict__.items()
+            if not callable(value) and not key.startswith("__")
+        )
+        dict_object["_id"] = self.post_id
         return dict_object

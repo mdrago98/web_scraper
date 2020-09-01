@@ -1,8 +1,12 @@
 # Social Media Crawler
 
-The following project implements a very basic web crawler to get posts from a variety of social media sources(Reddit, twitter) relating to a articular company.
-The crawler is composed of two source handlers defined under crawler/web_handlers/ to handle each supported social media platform. The reddit handler is written using the praw api whilst the twitter handler parses twitter pages using beautiful soup to get posts. 
+The following project implements a very basic web crawler to get posts from a variety of social media sources (Reddit, Twitter) relating to a particular company / search key.
+The crawler is composed of two source handlers defined under crawler/web_handlers/ to handle each supported social media platform. The Reddit handler is written using the praw api whilst the twitter handler parses twitter pages using beautiful soup to get posts. 
 The handlers return a list of Post objects.
+
+## Architecture
+A document source must inherit from the source handler object and implement the "get_posts" interface method. If the document handler needs parsing capabilities, the ParserMixin can be added to the class. The ApiHandlerMixin mixin adds required fields for a data-source which requires API communication.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -23,7 +27,18 @@ Next install the dependencies listed in the requirements.txt file
 pip install -r requirements.txt
 ```
 
-Finally the scrip could be run as follows:
+#### Create a config file
+
+Create a config.yaml file in the root directory with the following config keys:
+
+```yaml
+REDDIT_CLIENT_ID: <REDDIT_CLIENT_ID>
+REDDIT_CLIENT_SECRET: <REDDIT_CLIENT_SECRET>
+REDDIT_USER_AGENT: <REDDIT_USER_AGENT>
+OUTPUT_LOC: output
+```
+
+Finally the script could be run as follows:
 ```bash
 python post_collector.py company_name [config_location]
 python post_collector.py google

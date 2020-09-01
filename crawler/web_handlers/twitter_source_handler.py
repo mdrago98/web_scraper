@@ -1,7 +1,11 @@
 import json
 
 from crawler.models.post_model import PostModel
-from crawler.web_handlers.source_handler import SourceHandler, ResourceDownloaderMixin, ParserMixin
+from crawler.web_handlers.source_handler import (
+    SourceHandler,
+    ResourceDownloaderMixin,
+    ParserMixin,
+)
 
 
 class TwitterSourceHandler(ResourceDownloaderMixin, ParserMixin, SourceHandler):
@@ -11,8 +15,10 @@ class TwitterSourceHandler(ResourceDownloaderMixin, ParserMixin, SourceHandler):
 
     @property
     def twitter_url_template(self):
-        return 'https://twitter.com/i/profiles/show/{}/timeline/tweets?' \
-               + 'include_available_features=1&include_entities=1&include_new_items_bar=true'
+        return (
+            "https://twitter.com/i/profiles/show/{}/timeline/tweets?"
+            + "include_available_features=1&include_entities=1&include_new_items_bar=true"
+        )
 
     def __init__(self):
         """
@@ -43,8 +49,11 @@ class TwitterSourceHandler(ResourceDownloaderMixin, ParserMixin, SourceHandler):
         :param tweet: the tweet
         :return: the score
         """
-        interactions = [interaction.text for interaction in tweet.select('span.ProfileTweet-actionCount')]
-        return int(interactions[2].split()[0].replace(',', "").replace('.', ""))
+        interactions = [
+            interaction.text
+            for interaction in tweet.select("span.ProfileTweet-actionCount")
+        ]
+        return int(interactions[2].split()[0].replace(",", "").replace(".", ""))
 
     def get_posts(self, query, limit: int = 10000):
         """
@@ -54,16 +63,31 @@ class TwitterSourceHandler(ResourceDownloaderMixin, ParserMixin, SourceHandler):
         :return: returns a list of posts
         """
         res = self.get_resource(
-            self.twitter_url_template.format(query),
-            headers=self.get_headers(query))
-        parser = self.configure_parser(json.loads(res)['items_html'], 'html5lib')
-        return [PostModel(tweet.attrs['data-item-id'], '',
-                          ' '.join(next(iter(tweet.select('p.tweet-text')), '').text.split()),
-                          user.attrs['data-permalink-path'], self.get_score(tweet),
-                          int(int(''.join(tweet.select('span._timestamp')[0].attrs['data-time-ms'].split())) / 1000),
-                          'TWITTER', False)
-                for tweet, user in
-                zip(
-                    parser.select('li.stream-item'),
-                    parser.select('div.js-profile-popup-actionable')
-                )]
+            self.twitter_url_template.format(query), headers=self.get_headers(query)
+        )
+        parser = self.configure_parser(json.loads(res)["items_html"], "html5lib")
+        return [
+            PostModel(
+                tweet.attrs["data-item-id"],
+                "",
+                " ".join(next(iter(tweet.select("p.tweet-text")), "").text.split()),
+                user.attrs["data-permalink-path"],
+                self.get_score(tweet),
+                int(
+                    int(
+                        "".join(
+                            tweet.select("span._timestamp")[0]
+                            .attrs["data-time-ms"]
+                            .split()
+                        )
+                    )
+                    / 1000
+                ),
+                "TWITTER",
+                False,
+            )
+            for tweet, user in zip(
+                parser.select("li.stream-item"),
+                parser.select("div.js-profile-popup-actionable"),
+            )
+        ]

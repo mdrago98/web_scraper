@@ -43,7 +43,7 @@ class ResourceException(Exception):
         :param reason: the reason message
         """
         # Call the base class constructor with the parameters it needs
-        super().__init__(f'The resource responded with {status_code} {reason}')
+        super().__init__(f"The resource responded with {status_code} {reason}")
 
 
 class ResourceDownloaderMixin:
@@ -69,7 +69,7 @@ class ParserMixin:
     A mix-in to get parser support
     """
 
-    def configure_parser(self, content: bytes, parser='html5lib'):
+    def configure_parser(self, content: bytes, parser="html5lib"):
         """
         A function to initialise a new beautiful soup parser
         :param content: the content to parse
